@@ -5,7 +5,7 @@ const prefixer = require('gulp-autoprefixer')
 const clean = require('gulp-clean-css')
 const concat = require('gulp-concat')
 const map = require('gulp-sourcemaps')
-
+const bs = require('browser-sync')
 module.exports = function style() {
     return src('src/scss/**/*.scss')
         .pipe(map.init())                               //mapping
@@ -31,4 +31,5 @@ module.exports = function style() {
         .pipe(concat('style.min.css'))             //make one file
         .pipe(map.write('../sourcemaps/'))    //writing sourcemap
         .pipe(dest('build/css/'))                     //final file
+        .pipe(bs.stream())
 }
