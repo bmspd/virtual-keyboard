@@ -11,5 +11,44 @@ body > h1 {
   text-align: center;
 }
 body > textarea {
-  width: 300px;
+  cursor: pointer;
+  width: 500px;
+  user-select: none;
+}
+textarea::selection {
+  background-color: transparent;
+}
+.__keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  width: 800px;
+  height: 300px;
+  background-color: lightcyan;
+  .__row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .__key {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: bisque;
+      border-radius: 9px;
+      width: 50px;
+      height: 50px;
+      user-select: none;
+      transition: background-color 0.5s;
+    }
+    .__key:hover {
+      background-color: lightblue;
+      transition: background-color 0.5s;
+    }
+  }
+}
+.active {
+  background-color: red!important;
+  transition: background-color 0.5s;
 }

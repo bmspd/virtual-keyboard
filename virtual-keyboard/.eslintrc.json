@@ -4,12 +4,12 @@
         "commonjs": true,
         "es2021": true
     },
-    "extends": "eslint:recommended",
+    "extends": "airbnb-base",
     "parserOptions": {
         "ecmaVersion": "latest"
     },
     "rules": {
-        "semi": ["error", "always"],
-        "quotes": ["error", "single"]
+        "no-console": 0,
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
     }
 }
