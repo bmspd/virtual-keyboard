@@ -23,8 +23,9 @@ textarea::selection {
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
-  width: 800px;
-  height: 300px;
+  gap: 10px;
+  width: auto;
+  height: auto;
   background-color: lightcyan;
   .__row {
     display: flex;
@@ -37,7 +38,7 @@ textarea::selection {
       align-items: center;
       background-color: bisque;
       border-radius: 9px;
-      width: 50px;
+      min-width: 50px;
       height: 50px;
       user-select: none;
       transition: background-color 0.5s;
@@ -51,4 +52,7 @@ textarea::selection {
 .active {
   background-color: red!important;
   transition: background-color 0.5s;
+}
+.invisible {
+  display: none;
 }
