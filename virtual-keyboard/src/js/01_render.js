@@ -1,11 +1,11 @@
-let currentLang = 'en';
+let currentLang = window.localStorage.getItem('lang') ?? 'en';
 let capsLockStatus = false;
 let shiftStatus = false;
-const invisibleSymbols = ['Control', 'CapsLock', 'Alt', 'Shift', 'Delete', 'Backspace', 'Tab', 'Meta'];
+const invisibleSymbols = ['Control', 'CapsLock', 'Alt',
+  'Shift', 'Delete', 'Backspace', 'Tab', 'Meta', 'ArrowUp',
+  'ArrowLeft', 'ArrowDown', 'ArrowRight'];
 const enAlphabet = 'qwertyuiopasdfghjklzxcvbnm';
 const ruAlphabet = 'йцукенгшщзхъфывапролджэёячсмитьбю';
-const ruKeyboardDict = '>1234567890-=йцукенгшщзхъфывапролджэё]ячсмитьбю/<!"№%:,.;()_+ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЁ[ЯЧСМИТЬБЮ?';
-const enKeyboardDict = "§1234567890-=qwertyuiop[]asdfghjkl;'\\`zxcvbnm,./±!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|~ZXCVBNM<>?";
 const keys1 = [['§', '±', '>', '<'], ['1', '!'], ['2', '@', '"'], ['3', '#', '№'],
   ['4', '$', '%'], ['5', '%', ':'], ['6', '^', ','], ['7', '&', '.'],
   ['8', '*', ';'], ['9', '('], ['0', ')'], ['-', '_'], ['=', '+'], ['Backspace', 'Backspace']];
@@ -24,18 +24,19 @@ const keys3 = [['CapsLock', 'CapsLock'], ['a', 'A', 'ф', 'Ф'], ['s', 'S', 'ы'
   ['\'', '"', 'э', 'Э'], ['\\', '|', 'ё', 'Ё'], ['Enter', 'Enter']];
 const codeKeys3 = ['CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF',
   'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Backslash', 'Enter'];
-const keys4 = [['LShift', 'LShift'], ['`', '~', ']', '['], ['z', 'Z', 'я', 'Я'], ['x', 'X', 'ч', 'Ч'],
+const keys4 = [['Shift', 'Shift'], ['`', '~', ']', '['], ['z', 'Z', 'я', 'Я'], ['x', 'X', 'ч', 'Ч'],
   ['c', 'C', 'с', 'С'], ['v', 'V', 'м', 'М'], ['b', 'B', 'и', 'И'], ['n', 'N', 'т', 'Т'],
   ['m', 'M', 'ь', 'Ь'], [',', '<', 'б', 'Б'], ['.', '>', 'ю', 'Ю'], ['/', '?', '/', '?'],
-  ['RShift', 'RShift']];
+  ['Shift', 'Shift'], ['⤒', '⤒']];
 const codeKeys4 = ['ShiftLeft', 'IntlBackslash', 'KeyZ', 'KeyX', 'KeyC',
-  'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ShiftRight'];
-const keys5 = [['LControl', 'LControl'], ['LAlt', 'LAlt'], ['LMeta', 'LMeta'],
-  ['Spacebar', 'Spacebar'], ['RMeta', 'RMeta'], ['RAlt', 'RAlt'], ['RControl', 'RControl']];
-const codeKeys5 = ['ControlLeft', 'AltLeft', 'MetaLeft', 'Space', 'MetaRight', 'AtlRight', 'ControlRight'];
+  'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ShiftRight', 'ArrowUp'];
+const keys5 = [['Control', 'Control'], ['Option', 'Option'], ['Command', 'Command'],
+  ['Spacebar', 'Spacebar'], ['Command', 'Command'], ['Option', 'Option'], ['Control', 'Control'],
+  ['➜', '➜'], ['⤓', '⤓'], ['➜', '➜']];
+const codeKeys5 = ['ControlLeft', 'AltLeft', 'MetaLeft', 'Space', 'MetaRight', 'AltRight',
+  'ControlRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
 const keysAll = [keys1, keys2, keys3, keys4, keys5];
 const codeKeysAll = [codeKeys1, codeKeys2, codeKeys3, codeKeys4, codeKeys5];
-const flatKeysAll = keysAll.flat();
 
 function createNewElement(tag, className, target, innerText) {
   const element = document.createElement(tag);
@@ -63,14 +64,18 @@ function chooseButton(buttons, event) {
 }
 function findPressedButton(event, keyCaps) {
   let current;
-  if (event.code === 'ShiftLeft') current = [keyCaps.find((el) => el.classList.value.includes('_LShift_'))];
-  else if (event.code === 'ShiftRight') current = [keyCaps.find((el) => el.classList.value.includes('_RShift_'))];
-  else if (event.code === 'AltLeft') current = [keyCaps.find((el) => el.classList.value.includes('_LAlt_'))];
-  else if (event.code === 'AltRight') current = [keyCaps.find((el) => el.classList.value.includes('_RAlt_'))];
-  else if (event.code === 'ControlLeft') current = [keyCaps.find((el) => el.classList.value.includes('_LControl_'))];
-  else if (event.code === 'ControlRight') current = [keyCaps.find((el) => el.classList.value.includes('_RControl_'))];
-  else if (event.code === 'MetaLeft') current = [keyCaps.find((el) => el.classList.value.includes('_LMeta_'))];
-  else if (event.code === 'MetaRight') current = [keyCaps.find((el) => el.classList.value.includes('_RMeta_'))];
+  if (event.code === 'ShiftLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Shift_'))[0]];
+  else if (event.code === 'ShiftRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Shift_'))[1]];
+  else if (event.code === 'AltLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Option_'))[0]];
+  else if (event.code === 'AltRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Option_'))[1]];
+  else if (event.code === 'ControlLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Control_'))[0]];
+  else if (event.code === 'ControlRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Control_'))[1]];
+  else if (event.code === 'MetaLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Command_'))[0]];
+  else if (event.code === 'MetaRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Command_'))[1]];
+  else if (event.code === 'ArrowUp') current = [keyCaps.find((el) => el.classList.value.includes('_⤒_'))];
+  else if (event.code === 'ArrowLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_➜_'))[0]];
+  else if (event.code === 'ArrowDown') current = [keyCaps.find((el) => el.classList.value.includes('_⤓_'))];
+  else if (event.code === 'ArrowRight') current = [keyCaps.filter((el) => el.classList.value.includes('_➜_'))[1]];
   else current = keyCaps.filter((el) => el.classList.value.includes(`_${event.key === ' ' ? 'Spacebar' : event.key}_`));
   if (!current.length) return null;
   current = chooseButton(current, event);
@@ -106,6 +111,7 @@ function keyboardLangChanger(keyboard) {
     }
   });
 }
+
 function capsLockChanger(event, keyboard) {
   capsLockStatus = !capsLockStatus;
   if (currentLang === 'en') {
@@ -128,11 +134,11 @@ function languageChanger(key, symbolKit) {
   const [kit] = symbolKit;
   if (key === 'Tab') return '\t';
   if (key === 'Enter') return '\n';
+  if (key === ' ') return ' ';
   if (invisibleSymbols.includes(key)) return '';
   const span = Array.from(kit.querySelectorAll('span'));
   const activeSpan = span.find((el) => !el.classList.value.includes('invisible'));
   return activeSpan.innerText;
-  return 'test';
 }
 function shiftButtonHandler(event, keyboard, status) {
   if (shiftStatus === 2 && status === 'down') return;
@@ -177,8 +183,11 @@ keyboard.classList.add('__keyboard');
 body.append(keyboard);
 /* LANGUAGE BAR */
 const languageBar = document.createElement('h1');
-languageBar.innerText = currentLang;
+languageBar.classList.add('__lang-bar');
+languageBar.innerText = `Current language is ${currentLang}`;
 body.append(languageBar);
+createNewElement('h1', '', body, 'Keyboard was made in MacOS system');
+createNewElement('h1', '', body, 'To switch language press CONTROL + OPTION\nor CTRL + ALT on WIN');
 keysAll.forEach((keys, index) => {
   const row = createNewElement('div', ['__row']);
   keys.forEach((key, i) => appendKeys(key, row, [index, i]));
@@ -188,9 +197,11 @@ keysAll.forEach((keys, index) => {
 const keyCaps = Array.from(keyboard.querySelectorAll('.__key'));
 document.addEventListener('keydown', (event) => {
   console.log('1keydown', event.key);
+
   if (event.ctrlKey && event.altKey) {
     currentLang = currentLang === 'en' ? 'ru' : 'en';
-    languageBar.innerText = currentLang;
+    window.localStorage.setItem('lang', currentLang);
+    languageBar.innerText = `Current language is ${currentLang}`;
     keyboardLangChanger(keyboard);
   }
   const current = findPressedButton(event, keyCaps);
@@ -221,4 +232,37 @@ document.addEventListener('keyup', (event) => {
   const current = findPressedButton(event, keyCaps);
   if (current === null) return;
   current.forEach((cur) => cur.classList.remove('active'));
+});
+keyboardLangChanger(keyboard);
+const keyDivs = document.querySelectorAll('.__key');
+keyDivs.forEach((key) => {
+  const code = Array.from(key.classList).find((el) => el.includes('code')).slice(5);
+  let customKey = '';
+  if (code === 'ShiftLeft' || code === 'ShiftRight') customKey = 'Shift';
+  else if (code === 'CapsLock') customKey = 'CapsLock';
+  else if (code === 'Tab') customKey = 'Tab';
+  else if (code === 'Backspace') customKey = 'Backspace';
+  else if (code === 'ControlLeft' || code === 'ControlRight') customKey = 'Control';
+  else if (code === 'AltLeft' || code === 'AltRight') customKey = 'Alt';
+  else if (code === 'MetaLeft' || code === 'MetaRight') customKey = 'Meta';
+  else if (code === 'Delete') customKey = 'Delete';
+  else if (code === 'Enter') customKey = 'Enter';
+  else if (code === 'ArrowRight') customKey = 'ArrowRight';
+  else if (code === 'ArrowLeft') customKey = 'ArrowLeft';
+  else if (code === 'ArrowDown') customKey = 'ArrowDown';
+  else if (code === 'ArrowUp') customKey = 'ArrowUp';
+  else customKey = undefined;
+  const keyDown = new KeyboardEvent('keydown', { code, key: customKey });
+  const keyUp = new KeyboardEvent('keyup', { code, key: customKey });
+  key.addEventListener('mousedown', () => {
+    if (code === 'CapsLock' && key.classList.contains('active')) {
+      document.dispatchEvent(keyUp);
+      return;
+    }
+    document.dispatchEvent(keyDown);
+  });
+  key.addEventListener('mouseup', () => {
+    if (code === 'CapsLock') return;
+    document.dispatchEvent(keyUp);
+  });
 });

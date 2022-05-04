@@ -1,3 +1,6 @@
+* {
+  font-family: 'Montserrat Alternates', sans-serif;
+}
 body {
   margin: 0;
   padding: 0;
@@ -21,7 +24,7 @@ textarea::selection {
 .__keyboard {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 50px;
   gap: 10px;
   width: auto;
@@ -43,15 +46,43 @@ textarea::selection {
       user-select: none;
       transition: background-color 0.5s;
     }
+    .code_ArrowLeft {
+      transform: rotate(180deg);
+    }
     .__key:hover {
       background-color: lightblue;
       transition: background-color 0.5s;
     }
+    /*.__key:active {
+      background-color: red;
+    }*/
   }
 }
 .active {
   background-color: red!important;
   transition: background-color 0.5s;
+
+}
+.active::after {
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00FFCB;
+  position:absolute;
+  //transform: translate(-50%, -50%);
+  animation: ring 1s infinite;
+}
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+  }
 }
 .invisible {
   display: none;
