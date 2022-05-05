@@ -1,6 +1,7 @@
 let currentLang = window.localStorage.getItem('lang') ?? 'en';
 let capsLockStatus = false;
 let shiftStatus = false;
+const GitURL = 'https://github.com/bmspd';
 const invisibleSymbols = ['Control', 'CapsLock', 'Alt',
   'Shift', 'Delete', 'Backspace', 'Tab', 'Meta', 'ArrowUp',
   'ArrowLeft', 'ArrowDown', 'ArrowRight'];
@@ -8,16 +9,16 @@ const enAlphabet = 'qwertyuiopasdfghjklzxcvbnm';
 const ruAlphabet = 'йцукенгшщзхъфывапролджэёячсмитьбю';
 const keys1 = [['§', '±', '>', '<'], ['1', '!'], ['2', '@', '"'], ['3', '#', '№'],
   ['4', '$', '%'], ['5', '%', ':'], ['6', '^', ','], ['7', '&', '.'],
-  ['8', '*', ';'], ['9', '('], ['0', ')'], ['-', '_'], ['=', '+'], ['Backspace', 'Backspace']];
+  ['8', '*', ';'], ['9', '('], ['0', ')'], ['-', '_'], ['=', '+'], ['Backspace', 'Backspace'], ['Git', 'Git']];
 const codeKeys1 = ['Backquote', 'Digit1', 'Digit2',
   'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7',
-  'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace'];
+  'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace', 'Git'];
 const keys2 = [['Tab', 'Tab'], ['q', 'Q', 'й', 'Й'], ['w', 'W', 'ц', 'Ц'], ['e', 'E', 'у', 'У'],
   ['r', 'R', 'к', 'К'], ['t', 'T', 'е', 'Е'], ['y', 'Y', 'н', 'Н'], ['u', 'U', 'г', 'Г'],
   ['i', 'I', 'ш', 'Ш'], ['o', 'O', 'щ', 'Щ'], ['p', 'P', 'з', 'З'], ['[', '{', 'х', 'Х'],
-  [']', '}', 'ъ', 'Ъ'], ['Delete', 'Delete']];
+  [']', '}', 'ъ', 'Ъ'], ['Delete', 'Delete'], ['Lan', 'Lan']];
 const codeKeys2 = ['Tab', 'KeyQ', 'KeyW', 'KeyE', 'KeyR',
-  'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Delete'];
+  'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Delete', 'Lan'];
 const keys3 = [['CapsLock', 'CapsLock'], ['a', 'A', 'ф', 'Ф'], ['s', 'S', 'ы', 'Ы'],
   ['d', 'D', 'в', 'В'], ['f', 'F', 'а', 'А'], ['g', 'G', 'п', 'П'], ['h', 'H', 'р', 'Р'],
   ['j', 'J', 'о', 'О'], ['k', 'K', 'л', 'Л'], ['l', 'L', 'д', 'Д'], [';', ':', 'ж', 'Ж'],
@@ -27,11 +28,11 @@ const codeKeys3 = ['CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF',
 const keys4 = [['Shift', 'Shift'], ['`', '~', ']', '['], ['z', 'Z', 'я', 'Я'], ['x', 'X', 'ч', 'Ч'],
   ['c', 'C', 'с', 'С'], ['v', 'V', 'м', 'М'], ['b', 'B', 'и', 'И'], ['n', 'N', 'т', 'Т'],
   ['m', 'M', 'ь', 'Ь'], [',', '<', 'б', 'Б'], ['.', '>', 'ю', 'Ю'], ['/', '?', '/', '?'],
-  ['Shift', 'Shift'], ['⤒', '⤒']];
+  ['Shift', 'Shift'], ['⤒', '⤒'], ['♺', '♺']];
 const codeKeys4 = ['ShiftLeft', 'IntlBackslash', 'KeyZ', 'KeyX', 'KeyC',
   'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ShiftRight', 'ArrowUp'];
-const keys5 = [['Control', 'Control'], ['Option', 'Option'], ['Command', 'Command'],
-  ['Spacebar', 'Spacebar'], ['Command', 'Command'], ['Option', 'Option'], ['Control', 'Control'],
+const keys5 = [['Ctrl', 'Ctrl'], ['⌥', '⌥'], ['⌘', '⌘'],
+  ['Spacebar', 'Spacebar'], ['⌘', '⌘'], ['⌥', '⌥'], ['Ctrl', 'Ctrl'],
   ['➜', '➜'], ['⤓', '⤓'], ['➜', '➜']];
 const codeKeys5 = ['ControlLeft', 'AltLeft', 'MetaLeft', 'Space', 'MetaRight', 'AltRight',
   'ControlRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
@@ -66,16 +67,17 @@ function findPressedButton(event, keyCaps) {
   let current;
   if (event.code === 'ShiftLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Shift_'))[0]];
   else if (event.code === 'ShiftRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Shift_'))[1]];
-  else if (event.code === 'AltLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Option_'))[0]];
-  else if (event.code === 'AltRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Option_'))[1]];
-  else if (event.code === 'ControlLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Control_'))[0]];
-  else if (event.code === 'ControlRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Control_'))[1]];
-  else if (event.code === 'MetaLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Command_'))[0]];
-  else if (event.code === 'MetaRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Command_'))[1]];
+  else if (event.code === 'AltLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_⌥_'))[0]];
+  else if (event.code === 'AltRight') current = [keyCaps.filter((el) => el.classList.value.includes('_⌥_'))[1]];
+  else if (event.code === 'ControlLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_Ctrl_'))[0]];
+  else if (event.code === 'ControlRight') current = [keyCaps.filter((el) => el.classList.value.includes('_Ctrl_'))[1]];
+  else if (event.code === 'MetaLeft') current = [keyCaps.filter((el) => el.classList.value.includes('⌘'))[0]];
+  else if (event.code === 'MetaRight') current = [keyCaps.filter((el) => el.classList.value.includes('⌘'))[1]];
   else if (event.code === 'ArrowUp') current = [keyCaps.find((el) => el.classList.value.includes('_⤒_'))];
   else if (event.code === 'ArrowLeft') current = [keyCaps.filter((el) => el.classList.value.includes('_➜_'))[0]];
   else if (event.code === 'ArrowDown') current = [keyCaps.find((el) => el.classList.value.includes('_⤓_'))];
   else if (event.code === 'ArrowRight') current = [keyCaps.filter((el) => el.classList.value.includes('_➜_'))[1]];
+  else if (event.code === '♺') console.log('hello');
   else current = keyCaps.filter((el) => el.classList.value.includes(`_${event.key === ' ' ? 'Spacebar' : event.key}_`));
   if (!current.length) return null;
   current = chooseButton(current, event);
@@ -188,6 +190,7 @@ languageBar.innerText = `Current language is ${currentLang}`;
 body.append(languageBar);
 createNewElement('h1', '', body, 'Keyboard was made in MacOS system');
 createNewElement('h1', '', body, 'To switch language press CONTROL + OPTION\nor CTRL + ALT on WIN');
+createNewElement('h2', '', body, 'Click on ♺ if you want to clear textarea field');
 keysAll.forEach((keys, index) => {
   const row = createNewElement('div', ['__row']);
   keys.forEach((key, i) => appendKeys(key, row, [index, i]));
@@ -218,7 +221,15 @@ document.addEventListener('keydown', (event) => {
     shiftButtonHandler(event, keyboard, 'down');
   }
   if (event.key === 'Delete' || event.key === 'Shift') return;
-  textarea.value += languageChanger(event.key, current);
+  const newSymbol = languageChanger(event.key, current);
+  if (newSymbol === '♺') textarea.value = '';
+  else if (newSymbol === 'Lan') {
+    currentLang = currentLang === 'en' ? 'ru' : 'en';
+    window.localStorage.setItem('lang', currentLang);
+    languageBar.innerText = `Current language is ${currentLang}`;
+    keyboardLangChanger(keyboard);
+  } else if (newSymbol === 'Git') window.open(GitURL, 'blank');
+  else textarea.value += newSymbol;
 });
 document.addEventListener('keyup', (event) => {
   console.log('keyup', event.key);
