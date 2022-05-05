@@ -68,7 +68,7 @@ textarea::selection {
     }*/
   }
 }
-.active:not(._Git_) {
+.active:not(._Git_):not(._Lan_) {
   background-color: red!important;
   transition: background-color 0.5s;
 }
@@ -82,13 +82,22 @@ textarea::selection {
   animation: ring 1s infinite;
 }
 ._Git_{
-  background-image: url("https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png");
-  background-color: red;
+  background-image: url("/img/github-logo.png");
   background-size: 50px 50px;
+  /*background-color: rgba(0,0,0,0) !important;*/
+  h2 {
+    opacity: 0;
+  }
 }
 ._Git_::after {
   animation: none;
-  background-color: red;
+}
+._Lan_ {
+  background-size: 55px 55px;
+  background-position: center;
+  h2 {
+    opacity: 0;
+  }
 }
 @keyframes ring {
   0% {

@@ -85,12 +85,15 @@ function findPressedButton(event, keyCaps) {
 }
 function keyboardLangChanger(keyboard) {
   const keyboardKeys = Array.from(keyboard.querySelectorAll('.__key'));
+  const flag = keyboardKeys.find((el) => el.classList.contains('_Lan_'));
   keyboardKeys.forEach((key) => {
     const lowerSpan = key.querySelector('._lower');
     const upperSpan = key.querySelector('._upper');
     const ruFirst = key.querySelector('._ruF');
     const ruSecond = key.querySelector('._ruS');
+    if (currentLang === 'ru') flag.style.backgroundImage = 'url("/img/russia.png")';
     if (currentLang === 'en') {
+      flag.style.backgroundImage = 'url("/img/united-kingdom.png")';
       if (ruFirst && ruSecond) {
         ruFirst.classList.add('invisible');
         ruSecond.classList.add('invisible');

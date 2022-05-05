@@ -9,11 +9,12 @@ exports.dev_js = tasks.dev_js;
 exports.html = tasks.html;
 exports.bs_html = tasks.bs_html;
 exports.watch = tasks.watch;
-
+exports.rastr = tasks.rastr;
 exports.default = gulp.parallel(
   exports.style,
   exports.dev_js,
   exports.html,
   exports.bs_html,
   exports.watch,
+  exports.rastr,
 );
