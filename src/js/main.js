@@ -349,19 +349,15 @@ keyDivs.forEach((key) => {
     }
     if (keyDown.code === 'ArrowLeft' && textarea.selectionStart) {
       textarea.setSelectionRange(textarea.selectionStart - 1, textarea.selectionStart - 1);
-      return;
     }
     if (keyDown.code === 'ArrowRight') {
       textarea.setSelectionRange(textarea.selectionStart + 1, textarea.selectionStart + 1);
-      return;
     }
     if (keyDown.code === 'ArrowUp') {
       textarea.setSelectionRange(textarea.value.length, textarea.value.length);
-      return;
     }
     if (keyDown.code === 'ArrowDown') {
       textarea.setSelectionRange(0, 0);
-      return;
     }
     document.dispatchEvent(keyDown);
   });
