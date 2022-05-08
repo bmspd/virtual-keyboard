@@ -343,6 +343,8 @@ keyDivs.forEach((key) => {
   const keyUp = new KeyboardEvent('keyup', { code, key: customKey });
   key.addEventListener('mousedown', (e) => {
     e.preventDefault();
+    const fakePress = Array.from(keyDivs).find(el => el.classList.contains(`code_${code}`))
+    fakePress.classList.add('fake-active')
     if (code === 'CapsLock' && key.classList.contains('active')) {
       document.dispatchEvent(keyUp);
       return;
@@ -366,3 +368,10 @@ keyDivs.forEach((key) => {
     document.dispatchEvent(keyUp);
   });
 });
+document.addEventListener('mouseup', () => {
+  const fakePress = Array.from(keyDivs).find(el => el.classList.contains(`fake-active`))
+  if (!fakePress) return
+  if (fakePress.classList.contains('code_CapsLock')) return
+  fakePress.classList.remove('fake-active')
+  fakePress.classList.remove('active')
+})
