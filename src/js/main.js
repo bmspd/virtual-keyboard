@@ -261,6 +261,7 @@ document.addEventListener('keydown', (event) => {
   }
   const current = findPressedButton(event, keyCaps);
   if (current === null) return;
+  if (current[0] === undefined) return;
   current.forEach((cur) => cur.classList.add('active'));
   if (event.key === 'Backspace' && textarea.selectionStart) {
     const start = textarea.selectionStart - 1;
@@ -318,6 +319,7 @@ document.addEventListener('keyup', (event) => {
   }
   const current = findPressedButton(event, keyCaps);
   if (current === null) return;
+  if (current[0] === undefined) return;
   current.forEach((cur) => cur.classList.remove('active'));
 });
 keyboardLangChanger(keyboard);
