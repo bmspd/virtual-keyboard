@@ -1,0 +1,119 @@
+* {
+  font-family: 'Montserrat Alternates', sans-serif;
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body > h1 {
+  text-align: center;
+}
+body > textarea {
+  font-size: 24px;
+  cursor: pointer;
+  width: 1000px;
+  height: 300px;
+  user-select: none;
+}
+textarea::selection {
+  background-color: transparent;
+}
+.__keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 50px;
+  padding: 10px;
+  gap: 10px;
+  width: auto;
+  height: auto;
+  background-color: #1d193a;
+  border: solid 4px #83658d;
+  border-radius: 5px;
+  .__row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .__key {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fce9b1;
+      border-radius: 9px;
+      min-width: 50px;
+      height: 50px;
+      user-select: none;
+      transition: background-color 0.5s;
+    }
+    .code_ArrowLeft {
+      transform: rotate(180deg);
+    }
+    ._Tab_ {width: 100px;}
+    ._CapsLock_ {width: 150px;}
+    ._Shift_ {width: 100px;}
+    ._Spacebar_ {width: 422px;}
+    ._Backspace_ {width: 150px;}
+    ._Enter_ {width: 120px;}
+    ._Delete_ {width: 100px;}
+    ._Ctrl_ {width: 89px;}
+    .__key:hover {
+      background-color: lightblue;
+      transition: background-color 0.5s;
+    }
+    /*.__key:active {
+      background-color: red;
+    }*/
+  }
+}
+.active:not(._Git_):not(._Lan_) {
+  background-color: deeppink !important;
+  transition: background-color 0.5s;
+}
+.active:not(._Git_)::after{
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00FFCB;
+  position:absolute;
+  //transform: translate(-50%, -50%);
+  animation: ring 1s infinite;
+}
+._Git_{
+  background-image: url("../img/github-logo.png");
+  background-size: 50px 50px;
+  /*background-color: rgba(0,0,0,0) !important;*/
+  h2 {
+    opacity: 0;
+  }
+}
+._Git_::after {
+  animation: none;
+}
+._Lan_ {
+  background-size: 55px 55px;
+  background-position: center;
+  h2 {
+    opacity: 0;
+  }
+}
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+  100% {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+  }
+}
+.invisible {
+  display: none;
+}
